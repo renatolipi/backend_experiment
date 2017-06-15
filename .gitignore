@@ -1,1 +1,5 @@
+# Python related
 *.pyc
+
+# databases
+*.sqlite3
