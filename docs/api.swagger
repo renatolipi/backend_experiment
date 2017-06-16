@@ -1,0 +1,372 @@
+# Paste this code into Swagger's online editor: http://editor.swagger.io
+swagger: "2.0"
+
+info:
+  description: "This is the document you must read to implement a client API to `backend_experiment` project."
+  version: "1.0.0"
+  title: "Backend Experiment"
+  contact:
+    email: "gues_my_email@here.com" # won't put my real e-mail here, sorry.
+
+basePath: "/api/v1"
+
+tags:
+- name: "Department"
+  description: "Company's department"
+- name: "Employee"
+  description: "Cpmpany's emplyee"
+- name: "Health"
+  description: "Just a health check endpoint"
+
+paths:
+# --------------------
+  /department:
+    get:
+      tags:
+      - "Department"
+      summary: "List departments."
+      description: "List all departments"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Content-Type"
+        type: "string"
+        description: "application/json"
+        required: true
+      - in: "header"
+        name: "authorization"
+        type: "string"
+        description: "token value"
+        required: true
+      responses:
+        200:
+          description: "Ok"
+        404:
+          description: "Not found"
+      security:
+      - api_key: []
+
+    post:
+      tags:
+      - "Department"
+      summary: "Add new department"
+      description: "Add a new department"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Content-Type"
+        type: "string"
+        description: "application/json"
+        required: true
+      - in: "header"
+        name: "authorization"
+        type: "string"
+        description: "token value"
+        required: true
+      - in: "body"
+        name: "data"
+        description: "Department name"
+        required: true
+        schema:
+          $ref: "#/definitions/Department"
+      responses:
+        200:
+          description: "Ok"
+          schema:
+            $ref: "#/definitions/ApiPostResponseOK"
+        208:
+          description: "Already exists"
+        412:
+          description: "Missing parameters"
+      security:
+      - api_key: []
+
+    put:
+      tags:
+      - "Department"
+      summary: "Update department"
+      description: "Update department name"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Content-Type"
+        type: "string"
+        description: "application/json"
+        required: true
+      - in: "header"
+        name: "authorization"
+        type: "string"
+        description: "token value"
+        required: true
+      - in: "body"
+        name: "data"
+        description: "Department name"
+        required: true
+        schema:
+          $ref: "#/definitions/Department"
+      responses:
+        200:
+          description: "Ok"
+        404:
+          description: "Not found"
+        409:
+          description: "Conflict: Department already exists."
+        412:
+          description: "Missing parameters"
+      security:
+      - api_key: []
+
+    delete:
+      tags:
+      - "Department"
+      summary: "Delete department"
+      description: "Exclude department"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Content-Type"
+        type: "string"
+        description: "application/json"
+        required: true
+      - in: "header"
+        name: "authorization"
+        type: "string"
+        description: "token value"
+        required: true
+      - in: "body"
+        name: "data"
+        description: "Department name"
+        required: true
+        schema:
+          $ref: "#/definitions/Department"
+      responses:
+        200:
+          description: "Ok"
+        404:
+          description: "Not found"
+        412:
+          description: "Missing parameters"
+      security:
+      - api_key: []
+
+# --------------------
+  /employee:
+    get:
+      tags:
+      - "Employee"
+      summary: "List employees."
+      description: "List all employees. You can filter by department, using: \"?department=department_name\" at the URL ending"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Content-Type"
+        type: "string"
+        description: "application/json"
+        required: true
+      - in: "header"
+        name: "authorization"
+        type: "string"
+        description: "token value"
+        required: true
+      responses:
+        200:
+          description: "JSON with a list of employees {\"result\": [{\"name\": \"Foolano\", \"email\": \"foo@lano.org\", \"department\": \"Mobile\"}, {\"name\": \"Belltrano\", \"email\": \"bell@trano.org\", \"department\": \"Architecture\"}]}"
+        404:
+          description: "Not found"
+      security:
+      - api_key: []
+
+    post:
+      tags:
+      - "Employee"
+      summary: "Add new employee"
+      description: "Add a new employee"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Content-Type"
+        type: "string"
+        description: "application/json"
+        required: true
+      - in: "header"
+        name: "authorization"
+        type: "string"
+        description: "token value"
+        required: true
+      - in: "body"
+        name: "data"
+        description: "Employee name, e-mail and department name"
+        required: true
+        schema:
+          $ref: "#/definitions/Employee"
+      responses:
+        200:
+          description: "Ok"
+        208:
+          description: "Already exists"
+        412:
+          description: "Missing parameters"
+      security:
+      - api_key: []
+
+    put:
+      tags:
+      - "Employee"
+      summary: "Add new employee"
+      description: "Add a new employee"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Content-Type"
+        type: "string"
+        description: "application/json"
+        required: true
+      - in: "header"
+        name: "authorization"
+        type: "string"
+        description: "token value"
+        required: true
+      - in: "body"
+        name: "data"
+        description: "Employee name, e-mail and department name"
+        required: true
+        schema:
+          $ref: "#/definitions/Employee"
+      responses:
+        200:
+          description: "Ok"
+        404:
+          description: "Not found"
+        409:
+          description: "Conflict: Department already exists."
+        412:
+          description: "Missing parameters"
+      security:
+      - api_key: []
+
+    delete:
+      tags:
+      - "Employee"
+      summary: "Delete employee"
+      description: "Exclude employee"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Content-Type"
+        type: "string"
+        description: "application/json"
+        required: true
+      - in: "header"
+        name: "authorization"
+        type: "string"
+        description: "token value"
+        required: true
+      - in: "body"
+        name: "data"
+        description: "Department name"
+        required: true
+        schema:
+          $ref: "#/definitions/Employee"
+      responses:
+        200:
+          description: "Ok"
+        404:
+          description: "Not found"
+        412:
+          description: "Missing parameters"
+      security:
+      - api_key: []
+
+# --------------------
+  /health:
+    post:
+      tags:
+      - "Health"
+      summary: "Health check"
+      description: "API health check"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "header"
+        name: "Content-Type"
+        type: "string"
+        description: "application/json"
+        required: true
+      responses:
+        200:
+          description: "{\"content\":\"OK\"}"
+      security:
+      - api_key: []
+
+securityDefinitions:
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+
+definitions:
+  Department:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+
+  Employee:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      email:
+        type: "string"
+      department:
+        type: "string"
+
+
+  ApiPostResponseOK:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+        example: 200
+      type:
+        type: "string"
+      message:
+        type: "string"
+
+  ApiPostResponseOkList:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+        example: 200
+      type:
+        type: "string"
+      message:
+        type: "string"
+
+# ----------------
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
