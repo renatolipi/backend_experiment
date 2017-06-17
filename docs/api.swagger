@@ -6,7 +6,7 @@ info:
   version: "1.0.0"
   title: "Backend Experiment"
   contact:
-    email: "gues_my_email@here.com" # won't put my real e-mail here, sorry.
+    email: "lipi@amazonas.27.com" # won't put my real e-mail here, sorry.
 
 basePath: "/api/v1"
 
@@ -14,7 +14,7 @@ tags:
 - name: "Department"
   description: "Company's department"
 - name: "Employee"
-  description: "Cpmpany's emplyee"
+  description: "Company's employee"
 - name: "Health"
   description: "Just a health check endpoint"
 
@@ -42,8 +42,8 @@ paths:
       responses:
         200:
           description: "Ok"
-        404:
-          description: "Not found"
+        401:
+          description: "Unauthorized"
       security:
       - api_key: []
 
@@ -80,6 +80,8 @@ paths:
             $ref: "#/definitions/ApiPostResponseOK"
         208:
           description: "Already exists"
+        401:
+          description: "Unauthorized"
         412:
           description: "Missing parameters"
       security:
@@ -114,6 +116,8 @@ paths:
       responses:
         200:
           description: "Ok"
+        401:
+          description: "Unauthorized"
         404:
           description: "Not found"
         409:
@@ -152,6 +156,8 @@ paths:
       responses:
         200:
           description: "Ok"
+        401:
+          description: "Unauthorized"
         404:
           description: "Not found"
         412:
@@ -182,8 +188,8 @@ paths:
       responses:
         200:
           description: "JSON with a list of employees {\"result\": [{\"name\": \"Foolano\", \"email\": \"foo@lano.org\", \"department\": \"Mobile\"}, {\"name\": \"Belltrano\", \"email\": \"bell@trano.org\", \"department\": \"Architecture\"}]}"
-        404:
-          description: "Not found"
+        401:
+          description: "Unauthorized"
       security:
       - api_key: []
 
@@ -218,6 +224,8 @@ paths:
           description: "Ok"
         208:
           description: "Already exists"
+        401:
+          description: "Unauthorized"
         412:
           description: "Missing parameters"
       security:
@@ -252,10 +260,12 @@ paths:
       responses:
         200:
           description: "Ok"
+        401:
+          description: "Unauthorized"
         404:
           description: "Not found"
         409:
-          description: "Conflict: Department already exists."
+          description: "Conflict"
         412:
           description: "Missing parameters"
       security:
@@ -290,6 +300,8 @@ paths:
       responses:
         200:
           description: "Ok"
+        401:
+          description: "Unauthorized"
         404:
           description: "Not found"
         412:
@@ -299,7 +311,7 @@ paths:
 
 # --------------------
   /health:
-    post:
+    get:
       tags:
       - "Health"
       summary: "Health check"
@@ -312,9 +324,18 @@ paths:
         type: "string"
         description: "application/json"
         required: true
+      - in: "header"
+        name: "Authorization"
+        type: "string"
+        description: "token"
+        required: true
       responses:
         200:
           description: "{\"content\":\"OK\"}"
+        400:
+          description: "{\"content\":\"Unsupported content_type\"}"
+        401:
+          description: "{\"content\":\"Unauthorized\"}"
       security:
       - api_key: []
 
@@ -365,8 +386,3 @@ definitions:
         type: "string"
       message:
         type: "string"
-
-# ----------------
-externalDocs:
-  description: "Find out more about Swagger"
-  url: "http://swagger.io"
