@@ -187,7 +187,7 @@ paths:
         required: true
       responses:
         200:
-          description: "JSON with a list of employees {\"result\": [{\"name\": \"Foolano\", \"email\": \"foo@lano.org\", \"department\": \"Mobile\"}, {\"name\": \"Belltrano\", \"email\": \"bell@trano.org\", \"department\": \"Architecture\"}]}"
+          description: "JSON with a list of employees {\"content\": [{\"name\": \"Foolano\", \"email\": \"foo@lano.org\", \"department\": \"Mobile\"}, {\"name\": \"Belltrano\", \"email\": \"bell@trano.org\", \"department\": \"Architecture\"}]}"
         400:
           description: "Errors like \"Unsupported content_type\""
         401:
@@ -224,10 +224,8 @@ paths:
       responses:
         200:
           description: "Ok"
-        208:
-          description: "Already exists"
         400:
-          description: "Errors like \"Unsupported content_type\" or \"Missing data\""
+          description: "Errors like \"Employee already exists\" or \"Unsupported content_type\" or \"Missing data\""
         401:
           description: "Unauthorized"
       security:

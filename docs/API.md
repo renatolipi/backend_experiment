@@ -21,6 +21,8 @@ You can test reaching our API by hitting `http://localhost:8000/api/v1/health`. 
 
 ## CURL examples
 
+##### Departments
+
 List all departments:
 ```
 $ curl -i -X GET -H "Content-Type: application/json" -H "Authorization: 00123456789ABCDEF"  http://localhost:8000/api/v1/department
@@ -41,6 +43,38 @@ Delete department:
 ```
 $ curl -i -X DELETE -H "Content-Type: application/json" --data-raw '{"department_name":"HR"}' http://localhost:8000/api/v1/department
 ```
+
+##### Employees
+
+List all employees:
+```
+$ curl -i -X GET -H "Content-Type: application/json" -H "Authorization: 00123456789ABCDEF"  http://localhost:8000/api/v1/employees
+```
+List employees filtering by department:
+```
+$ curl -i -X GET -H "Content-Type: application/json" -H "Authorization: 00123456789ABCDEF"  http://localhost:8000/api/v1/employees?department=Financial
+```
+... or multiple departments:
+```
+$ curl -i -X GET -H "Content-Type: application/json" -H "Authorization: 00123456789ABCDEF"  http://localhost:8000/api/v1/employees?department=Financial,Mobile
+```
+
+
+Add new employee:
+```
+$ curl -i -X POST -H "Content-Type: application/json" -H "Authorization: 00123456789ABCDEF" --data-raw '{"employee_name":"Droid Bot", "employee_email":"one@testc.om", "employee_department":"Financial"}' http://localhost:8000/api/v1/employee
+```
+
+
+Update employee:
+```
+```
+
+
+Delete employee:
+```
+```
+
 
 ## POSTMAN examples
 Postman examples are stored in the folder: `backend_experiment/docs/postman/`. Import theses files to your Postman app.
