@@ -12,6 +12,8 @@ class DepartmentListingTests(TestCase):
 
     def setUp(self):
         self.client = Client()
+        self.headers = {'HTTP_AUTHORIZATION': '00123456789ABCDEF',
+                        'CONTENT_TYPE': 'application/json'}
 
     def test_list_department_with_no_authorization_token(self):
         headers = {'CONTENT_TYPE': 'application/json'}
@@ -35,12 +37,10 @@ class DepartmentListingTests(TestCase):
                          {'content': 'Unsupported content_type'})
 
     def test_list_departments_has_no_entries(self):
-        headers = {'HTTP_AUTHORIZATION': '00123456789ABCDEF',
-                   'CONTENT_TYPE': 'application/json'}
 
         response = self.client.get('/api/v1/department',
                                    data=None,
-                                   **headers)
+                                   **self.headers)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"content": []})
@@ -49,12 +49,9 @@ class DepartmentListingTests(TestCase):
         Department.objects.create(name="Human Resources")
         Department.objects.create(name="Financial")
 
-        headers = {'HTTP_AUTHORIZATION': '00123456789ABCDEF',
-                   'CONTENT_TYPE': 'application/json'}
-
         response = self.client.get('/api/v1/department',
                                    data=None,
-                                   **headers)
+                                   **self.headers)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
@@ -68,6 +65,8 @@ class DepartmentCreatingTests(TestCase):
 
     def setUp(self):
         self.client = Client()
+        self.headers = {'HTTP_AUTHORIZATION': '00123456789ABCDEF',
+                        'CONTENT_TYPE': 'application/json'}
 
     def test_create_department_with_no_authorization_token(self):
         headers = {'CONTENT_TYPE': 'application/json'}
@@ -97,14 +96,11 @@ class DepartmentCreatingTests(TestCase):
         self.assertEqual(Department.objects.count(), 0)
 
     def test_create_department_missing_or_wrong_data(self):
-        headers = {'CONTENT_TYPE': 'application/json',
-                   'HTTP_AUTHORIZATION': '00123456789ABCDEF'}
-
         data = None
 
         response = self.client.post('/api/v1/department',
                                     data=data,
-                                    **headers)
+                                    **self.headers)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(),
@@ -115,7 +111,7 @@ class DepartmentCreatingTests(TestCase):
 
         response = self.client.post('/api/v1/department',
                                     data=data,
-                                    **headers)
+                                    **self.headers)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(),
@@ -123,15 +119,12 @@ class DepartmentCreatingTests(TestCase):
         self.assertEqual(Department.objects.count(), 0)
 
     def test_create_department_successfully(self):
-        headers = {'CONTENT_TYPE': 'application/json',
-                   'HTTP_AUTHORIZATION': '00123456789ABCDEF'}
-
         data = {"department_name": "Techonology"}
 
         response = self.client.post('/api/v1/department',
                                     json.dumps(data),
                                     content_type='application/json',
-                                    **headers)
+                                    **self.headers)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(),
@@ -141,15 +134,12 @@ class DepartmentCreatingTests(TestCase):
     def test_create_department_with_existent_name(self):
         Department.objects.create(name="Financial")
 
-        headers = {'CONTENT_TYPE': 'application/json',
-                   'HTTP_AUTHORIZATION': '00123456789ABCDEF'}
-
         data = {"department_name": "Financial"}
 
         response = self.client.post('/api/v1/department',
                                     json.dumps(data),
                                     content_type='application/json',
-                                    **headers)
+                                    **self.headers)
 
         self.assertEqual(response.status_code, 208)
         self.assertEqual(response.json(),
@@ -160,6 +150,8 @@ class DepartmentUpdatingTests(TestCase):
 
     def setUp(self):
         self.client = Client()
+        self.headers = {'HTTP_AUTHORIZATION': '00123456789ABCDEF',
+                        'CONTENT_TYPE': 'application/json'}
 
     def test_update_department_with_no_authorization_token(self):
         headers = {'CONTENT_TYPE': 'application/json'}
@@ -187,16 +179,13 @@ class DepartmentUpdatingTests(TestCase):
                          {'content': 'Unsupported content_type'})
 
     def test_update_nonexistent_department(self):
-        headers = {'CONTENT_TYPE': 'application/json',
-                   'HTTP_AUTHORIZATION': '00123456789ABCDEF'}
-
         data = {"id": "1",
                 "department_name": "Techonology"}
 
         response = self.client.put('/api/v1/department',
                                    json.dumps(data),
                                    content_type='application/json',
-                                   **headers)
+                                   **self.headers)
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(),
@@ -206,16 +195,13 @@ class DepartmentUpdatingTests(TestCase):
         Department.objects.create(name="Financial")
         Department.objects.create(name="Technology")
 
-        headers = {'CONTENT_TYPE': 'application/json',
-                   'HTTP_AUTHORIZATION': '00123456789ABCDEF'}
-
         data = {"id": "1",
                 "department_name": "Technology"}
 
         response = self.client.put('/api/v1/department',
                                    json.dumps(data),
                                    content_type='application/json',
-                                   **headers)
+                                   **self.headers)
 
         self.assertEqual(response.status_code, 409)
         self.assertEqual(response.json(),
@@ -225,16 +211,13 @@ class DepartmentUpdatingTests(TestCase):
         Department.objects.create(name="Financial")
         Department.objects.create(name="Tech")
 
-        headers = {'CONTENT_TYPE': 'application/json',
-                   'HTTP_AUTHORIZATION': '00123456789ABCDEF'}
-
         data = {"id": "2",
                 "department_name": "Mobile"}
 
         response = self.client.put('/api/v1/department',
                                    json.dumps(data),
                                    content_type='application/json',
-                                   **headers)
+                                   **self.headers)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(),
@@ -252,6 +235,8 @@ class DepartmentDeletingTests(TestCase):
 
     def setUp(self):
         self.client = Client()
+        self.headers = {'HTTP_AUTHORIZATION': '00123456789ABCDEF',
+                        'CONTENT_TYPE': 'application/json'}
 
     def test_delete_department_with_no_authorization_token(self):
         headers = {'CONTENT_TYPE': 'application/json'}
@@ -279,15 +264,12 @@ class DepartmentDeletingTests(TestCase):
                          {'content': 'Unsupported content_type'})
 
     def test_delete_nonexistent_department(self):
-        headers = {'CONTENT_TYPE': 'application/json',
-                   'HTTP_AUTHORIZATION': '00123456789ABCDEF'}
-
         data = {"department_name": "Techonology"}
 
         response = self.client.delete('/api/v1/department',
                                       json.dumps(data),
                                       content_type='application/json',
-                                      **headers)
+                                      **self.headers)
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(),
@@ -296,15 +278,12 @@ class DepartmentDeletingTests(TestCase):
     def test_delete_successfully(self):
         Department.objects.create(name="Financial")
 
-        headers = {'CONTENT_TYPE': 'application/json',
-                   'HTTP_AUTHORIZATION': '00123456789ABCDEF'}
-
         data = {"department_name": "Financial"}
 
         response = self.client.delete('/api/v1/department',
                                       json.dumps(data),
                                       content_type='application/json',
-                                      **headers)
+                                      **self.headers)
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(),
@@ -316,15 +295,12 @@ class DepartmentDeletingTests(TestCase):
                                 email="eee@mail.inf",
                                 department=dept)
 
-        headers = {'CONTENT_TYPE': 'application/json',
-                   'HTTP_AUTHORIZATION': '00123456789ABCDEF'}
-
         data = {"department_name": "Financial"}
 
         response = self.client.delete('/api/v1/department',
                                       json.dumps(data),
                                       content_type='application/json',
-                                      **headers)
+                                      **self.headers)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
