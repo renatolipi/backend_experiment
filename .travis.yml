@@ -1,0 +1,17 @@
+# VALIDATE AT: http://lint.travis-ci.org/renatolipi/backend_experiment
+
+language: python
+python:
+  - "2.7"
+
+env:
+  - DJANGO=1.11.2 DJANGO_SETTINGS_MODULE="company_project.settings"
+
+# command to install dependencies
+install: "pip install -r requirements.txt"
+
+before_script:
+- python manage.py migrate --noinput
+
+# command to run tests
+script: python company_project/manage.py tests
