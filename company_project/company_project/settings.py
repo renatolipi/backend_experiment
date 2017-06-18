@@ -22,6 +22,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'ts3=ws0cl-b%^52jj(uaaopw71ynyv_=pi9*=!d)-6w4g4&+0g'
 
+
+# ----------------------------------------------------------------------------
+API_ACCEPTABLE_CONTENT_TYPES = ['application/json', ]
+# ----------------------------------------------------------------------------
+# TODO: manage these tokens another way; get them from DB or env settings
+AUTHORIZATION_TOKENS = ['00123456789ABCDEF', ]
+# ----------------------------------------------------------------------------
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
