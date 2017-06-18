@@ -34,25 +34,115 @@ class EmployeeListingTests(TestCase):
         self.assertEqual(response.json(),
                          {'content': 'Unsupported content_type'})
 
-    @skip("TODO")
-    def test_list_employees(self):
-        client = Client()
-        response = client.get('/api/v1/department')
+    def test_list_employees_has_no_entries(self):
+        headers = {'HTTP_AUTHORIZATION': '00123456789ABCDEF',
+                   'CONTENT_TYPE': 'application/json'}
 
-        # TODO:
+        response = self.client.get('/api/v1/employees',
+                                   data=None,
+                                   **headers)
+
         self.assertEqual(response.status_code, 200)
-        # TODO:
-        self.assertEqual(response.json(), {"content": "OK"})
+        self.assertEqual(response.json(), {"content": []})
 
-    @skip("TODO")
+    def test_list_employees_has_entries(self):
+        department = Department.objects.create(name='HR')
+        Employee.objects.create(name="Foolano",
+                                email='one@testc.om',
+                                department=department)
+        Employee.objects.create(name="Droid Bot",
+                                email='two@testc.om',
+                                department=department)
+
+        headers = {'HTTP_AUTHORIZATION': '00123456789ABCDEF',
+                   'CONTENT_TYPE': 'application/json'}
+
+        response = self.client.get('/api/v1/employees',
+                                   data=None,
+                                   **headers)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.json()['content'], list)
+        self.assertEqual(len(response.json()['content']), 2)
+
     def test_list_employees_from_a_specific_department(self):
-        client = Client()
-        response = client.get('/api/v1/department?name=Mobile')
+        department1 = Department.objects.create(name='HR')
+        department2 = Department.objects.create(name='Financial')
+        Employee.objects.create(name="Foolano",
+                                email='one@testc.om',
+                                department=department1)
+        Employee.objects.create(name="Droid Bot",
+                                email='two@testc.om',
+                                department=department2)
 
-        # TODO:
+        headers = {'HTTP_AUTHORIZATION': '00123456789ABCDEF',
+                   'CONTENT_TYPE': 'application/json'}
+
+        response = self.client.get('/api/v1/employees',
+                                   data=None,
+                                   **headers)
+
         self.assertEqual(response.status_code, 200)
-        # TODO:
-        self.assertEqual(response.json(), {"content": "OK"})
+        self.assertIsInstance(response.json()['content'], list)
+        self.assertEqual(len(response.json()['content']), 2)
+
+        response = self.client.get('/api/v1/employees?department=Financial',
+                                   data=None,
+                                   **headers)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.json()['content'], list)
+        self.assertEqual(len(response.json()['content']), 1)
+
+    def test_list_employees_from_multiple_departments_filter(self):
+        department1 = Department.objects.create(name='HR')
+        department2 = Department.objects.create(name='Financial')
+        department3 = Department.objects.create(name='Mobile')
+        Employee.objects.create(name="Foolano",
+                                email='one@testc.om',
+                                department=department1)
+        Employee.objects.create(name="Droid Bot",
+                                email='two@testc.om',
+                                department=department2)
+        Employee.objects.create(name="Space Ghost",
+                                email='three@testc.om',
+                                department=department3)
+
+        headers = {'HTTP_AUTHORIZATION': '00123456789ABCDEF',
+                   'CONTENT_TYPE': 'application/json'}
+
+        response = self.client.get('/api/v1/employees?department=HR,Mobile',
+                                   data=None,
+                                   **headers)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.json()['content'], list)
+        self.assertEqual(len(response.json()['content']), 2)
+
+    def test_list_employees_from_multiple_departments_filter_one_wrong(self):
+        department1 = Department.objects.create(name='HR')
+        department2 = Department.objects.create(name='Financial')
+        department3 = Department.objects.create(name='Mobile')
+        Employee.objects.create(name="Foolano",
+                                email='one@testc.om',
+                                department=department1)
+        Employee.objects.create(name="Droid Bot",
+                                email='two@testc.om',
+                                department=department2)
+        Employee.objects.create(name="Space Ghost",
+                                email='three@testc.om',
+                                department=department3)
+
+        headers = {'HTTP_AUTHORIZATION': '00123456789ABCDEF',
+                   'CONTENT_TYPE': 'application/json'}
+
+        response = self.client.get('/api/v1/employees?department=Mobile,Final',
+                                   data=None,
+                                   **headers)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.json()['content'], list)
+        self.assertEqual(len(response.json()['content']), 1)
 
 
 class EmployeeCreatingTests(TestCase):

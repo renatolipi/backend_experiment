@@ -27,3 +27,21 @@ class Employee(models.Model):
 
     def __str__(self):
         return self.name
+
+    @classmethod
+    def get_all_as_list_of_dicts(self, departments_name_list):
+        if departments_name_list:
+            employees = self.objects.filter(
+                department__name__in=departments_name_list
+            )
+        else:
+            employees = self.objects.all()
+
+        list_of_dicts = []
+        for employee in employees:
+            item = {'id': employee.id,
+                    'name': employee.name,
+                    'email': employee.email,
+                    'department': employee.department.name}
+            list_of_dicts.append(item)
+        return list_of_dicts
