@@ -21,8 +21,8 @@ class Department(models.Model):
 
 @python_2_unicode_compatible
 class Employee(models.Model):
-    name = models.CharField(max_length=200)
-    email = models.EmailField(unique=True)
+    name = models.CharField(max_length=200, null=False)
+    email = models.EmailField(unique=True, null=False)
     department = models.ForeignKey(Department)
 
     def __str__(self):
