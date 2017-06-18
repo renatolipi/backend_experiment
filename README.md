@@ -1,7 +1,8 @@
 # Backend Experiment
 
 Travis CI: [![Travis](https://api.travis-ci.org/renatolipi/backend_experiment.svg?branch=master)](https://travis-ci.org/renatolipi/backend_experiment)
-*This is temporary project
+
+---
 
 ##### Description
 This is an example on how to build web apps that uses APIs. In this experiment, we are pretending to build an application that manages departments and employees from a company. You can list, create, update and exclude them.
@@ -9,6 +10,8 @@ This is an example on how to build web apps that uses APIs. In this experiment, 
 * Department entity is composed by an id and a name. This name must be unique.
 
 * Employee entity is composed by and id, a name, an email, that must be unique, and a department. This last is a foreign key to department entity.
+
+*_This is temporary project_
 
 ---
 
