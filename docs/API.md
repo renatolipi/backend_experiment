@@ -79,4 +79,8 @@ $ curl -i -X DELETE -H "Content-Type: application/json" -H "Authorization: 00123
 
 
 ## POSTMAN examples
-Postman examples are stored in the folder: `backend_experiment/docs/postman/`. Import theses files to your Postman app.
+Postman examples are stored in the folder: `backend_experiment/docs/postman/`. Import these files to your Postman app.
+
+Collection file: `Backend Experiment.postman_collection.json`
+
+Environment file: `Dev_Backend_Experiment.postman_environment.json` (for local development)

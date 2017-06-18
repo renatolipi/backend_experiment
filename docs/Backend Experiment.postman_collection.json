@@ -1,0 +1,239 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Backend Experiment",
+		"_postman_id": "fb8cb7f6-1b9b-9868-a940-7782d734a48a",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Department",
+			"description": "",
+			"item": [
+				{
+					"name": "List Departments",
+					"request": {
+						"url": "http://{{HOST}}:{{PORT}}/api/v1/department",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AUTH_TOKEN}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Create Department",
+					"request": {
+						"url": "http://{{HOST}}:{{PORT}}/api/v1/department",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AUTH_TOKEN}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"department_name\": \"Mobile\"}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Update Department",
+					"request": {
+						"url": "http://{{HOST}}:{{PORT}}/api/v1/department",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AUTH_TOKEN}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"department_id\": 1, \"department_name\": \"Mobile2\"}"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Exclude Department",
+					"request": {
+						"url": "http://{{HOST}}:{{PORT}}/api/v1/department",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AUTH_TOKEN}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"department_name\": \"Financial3\"}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Employee",
+			"description": "",
+			"item": [
+				{
+					"name": "List Employees",
+					"request": {
+						"url": "http://{{HOST}}:{{PORT}}/api/v1/employees",
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AUTH_TOKEN}}",
+								"description": ""
+							}
+						],
+						"body": {},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Create Employee",
+					"request": {
+						"url": "http://{{HOST}}:{{PORT}}/api/v1/employees",
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AUTH_TOKEN}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"employee_name\":\"Emp Name\", \"employee_email\":\"te@teste.ij\", \"employee_department\":\"Mobile2\" }"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Update Employee",
+					"request": {
+						"url": "http://{{HOST}}:{{PORT}}/api/v1/employees",
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AUTH_TOKEN}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"employee_id\":1, \"employee_name\":\"Emp Name\", \"employee_email\":\"te@teste.ij\", \"employee_department\":\"Mobile\" }"
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Exclude Employee",
+					"request": {
+						"url": "http://{{HOST}}:{{PORT}}/api/v1/employees",
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"description": ""
+							},
+							{
+								"key": "Authorization",
+								"value": "{{AUTH_TOKEN}}",
+								"description": ""
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"employee_email\":\"te@teste.ij\"}"
+						},
+						"description": ""
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Health Check",
+			"request": {
+				"url": "http://{{HOST}}:{{PORT}}/api/v1/health",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "Authorization",
+						"value": "{{AUTH_TOKEN}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
