@@ -18,7 +18,7 @@ Considering you're going to insall it in your home folder, I'm going to represen
 
 #### Pre requisites:
 ```
-$ sudo apt-get install python-dev python-virtualenv git curl
+$ sudo apt-get install python-dev python-pip python-virtualenv git curl build-essential
 ```
 
 #### Create a virtual environment
