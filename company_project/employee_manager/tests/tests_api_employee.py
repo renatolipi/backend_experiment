@@ -10,6 +10,30 @@ from employee_manager.models import Department, Employee
 
 class EmployeeListingTests(TestCase):
 
+    def setUp(self):
+        self.client = Client()
+
+    def test_list_employee_with_no_authorization_token(self):
+        headers = {'CONTENT_TYPE': 'application/json'}
+
+        response = self.client.get('/api/v1/employee',
+                                   data=None,
+                                   **headers)
+
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"content": "Unauthorized"})
+
+    def test_list_employee_with_no_content_type(self):
+        headers = {'HTTP_AUTHORIZATION': '00123456789ABCDEF'}
+
+        response = self.client.get('/api/v1/employee',
+                                   data=None,
+                                   **headers)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(),
+                         {'content': 'Unsupported content_type'})
+
     @skip("TODO")
     def test_list_employees(self):
         client = Client()

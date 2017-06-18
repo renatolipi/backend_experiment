@@ -14,15 +14,6 @@ from employee_manager.api_tools import (
 from employee_manager.models import Department
 
 
-@check_auth_token
-@validate_content_type
-def health(request):
-    response_data = {'content': 'OK'}
-    return HttpResponse(
-        json.dumps(response_data), content_type="application/json", status=200
-    )
-
-
 class DepartmentView(View):
 
     @check_auth_token
