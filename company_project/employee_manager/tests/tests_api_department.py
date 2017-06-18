@@ -178,6 +178,19 @@ class DepartmentUpdatingTests(TestCase):
         self.assertEqual(response.json(),
                          {'content': 'Unsupported content_type'})
 
+    def test_update_missing_or_wrong_data(self):
+        Department.objects.create(name="Tech")
+        Department.objects.create(name="Mobile")
+        data = {'id': '1', 'name': 'Technology'}
+
+        response = self.client.post('/api/v1/department',
+                                    data=data,
+                                    **self.headers)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(),
+                         {'content': 'Missing data'})
+
     def test_update_nonexistent_department(self):
         data = {"id": "1",
                 "department_name": "Techonology"}
@@ -263,6 +276,20 @@ class DepartmentDeletingTests(TestCase):
         self.assertEqual(response.json(),
                          {'content': 'Unsupported content_type'})
 
+    def test_delete_with_missing_or_wrong_parameters(self):
+        Department.objects.create(name="Financial")
+
+        data = {"name": "Financial"}
+
+        response = self.client.delete('/api/v1/department',
+                                      json.dumps(data),
+                                      content_type='application/json',
+                                      **self.headers)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(),
+                         {'content': "Missing data"})
+
     def test_delete_nonexistent_department(self):
         data = {"department_name": "Techonology"}
 
@@ -305,5 +332,5 @@ class DepartmentDeletingTests(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response.json(),
-            {'content': "This department cannot be deleted: it has employees"}
+            {'content': "Department cannot be deleted: it has employees"}
         )
