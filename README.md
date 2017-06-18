@@ -108,3 +108,11 @@ $ coverage report -m
 
   You can also paste the content of the file `backend_experiment/docs/api.swagger` into Swagger's online editor: `http://editor.swagger.io`, to read it pretty well formatted. **Remember:** although Swagger's online editor can generate the API client code, this `api.swagger` file was created intended to format API docs. I do not encourage you to use any auto generated code.
 
+---
+### Running with Docker
+
+```
+# docker build -t ubuntu:latest .
+
+# docker run -d -p 8088:8088 ubuntu:latest
+```
