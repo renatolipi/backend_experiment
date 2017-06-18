@@ -11,7 +11,7 @@ env:
 install: "pip install -r requirements.txt"
 
 before_script:
-- python manage.py migrate --noinput
+- python company_project/manage.py migrate --noinput
 
 # command to run tests
 script: python company_project/manage.py tests
