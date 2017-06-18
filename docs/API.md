@@ -23,23 +23,23 @@ You can test reaching our API by hitting `http://localhost:8000/api/v1/health`. 
 
 List all departments:
 ```
-$ curl -i -X GET -H "Content-Type: application/json" http://localhost:8000/api/v1/department
+$ curl -i -X GET -H "Content-Type: application/json" -H "Authorization: 00123456789ABCDEF"  http://localhost:8000/api/v1/department
 ```
 
 Add new department:
 ```
-$ curl -i -X POST -H "Accept: application/json" -H "Authorization: 00123456789ABCDEF" --data-raw '("department_name":"Financial"}' http://localhost:8000/api/v1/department
+$ curl -i -X POST -H "Content-Type: application/json" -H "Authorization: 00123456789ABCDEF" --data-raw '{"department_name":"Financial"}' http://localhost:8000/api/v1/department
 ```
 
 Update department:
 ```
-$ curl -i -X PUT -H "Accept: application/json" --data-raw '{"id": 2, "department_name":"MobileNEW"}' http://localhost:8000/api/v1/department
+$ curl -i -X PUT -H "Content-Type: application/json" --data-raw '{"id": 2, "department_name":"MobileNEW"}' http://localhost:8000/api/v1/department
 ```
 
 
 Delete department:
 ```
-$ curl -i -X DELETE -H "Accept: application/json" --data-raw '{"department_name":"HR"}' http://localhost:8000/api/v1/department
+$ curl -i -X DELETE -H "Content-Type: application/json" --data-raw '{"department_name":"HR"}' http://localhost:8000/api/v1/department
 ```
 
 ## POSTMAN examples
