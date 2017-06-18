@@ -1,0 +1,9 @@
+2017-06-18 22:33:48,352 [DEBUG] employee_manager.api.employee: employee POST: {}
+2017-06-18 22:33:48,353 [DEBUG] employee_manager.api.employee: employee POST: {}
+2017-06-18 22:33:48,365 [DEBUG] employee_manager.api.employee: employee DELETE: {u'email': u'another@testc.om'}
+2017-06-18 22:33:48,393 [DEBUG] employee_manager.api.employee: employee PUT: {u'employee_email': u'three@testc.om', u'id': u'2', u'employee_name': u'Jack'}
+2017-06-18 22:33:48,402 [DEBUG] employee_manager.api.base: health checking
+2017-06-18 22:33:48,404 [DEBUG] employee_manager.api.department: department POST: {}
+2017-06-18 22:33:48,405 [DEBUG] employee_manager.api.department: department POST: {}
+2017-06-18 22:33:48,419 [DEBUG] employee_manager.api.department: department DELETE: {u'name': u'Financial'}
+2017-06-18 22:33:48,427 [DEBUG] employee_manager.api.department: department PUT: {u'id': u'1', u'name': u'Technology'}
