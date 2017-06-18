@@ -183,9 +183,10 @@ class DepartmentUpdatingTests(TestCase):
         Department.objects.create(name="Mobile")
         data = {'id': '1', 'name': 'Technology'}
 
-        response = self.client.post('/api/v1/department',
-                                    data=data,
-                                    **self.headers)
+        response = self.client.put('/api/v1/department',
+                                   json.dumps(data),
+                                   content_type='application/json',
+                                   **self.headers)
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(),

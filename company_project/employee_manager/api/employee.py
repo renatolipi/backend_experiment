@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 import json
+import logging
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
@@ -12,6 +13,9 @@ from employee_manager.api_tools import (
     check_auth_token, validate_content_type, clean_request_data
 )
 from employee_manager.models import Department, Employee
+
+
+logger = logging.getLogger(__name__)
 
 
 class EmployeeView(View):
@@ -62,6 +66,7 @@ class EmployeeView(View):
                 response_data = {'content': message}
 
         else:
+            logger.debug('employee POST: {}'.format(request_data))
             status = 400
             message = 'Missing data'
             response_data = {'content': message}
@@ -83,6 +88,7 @@ class EmployeeView(View):
 
         if not (employee_id and employee_new_name and employee_new_email and
                 employee_new_department):
+            logger.debug('employee PUT: {}'.format(request_data))
             status = 400
             message = "Missing data"
             response_data = {'content': message}
@@ -132,8 +138,8 @@ class EmployeeView(View):
     @check_auth_token
     @validate_content_type
     def delete(self, request, *args, **kwargs):
-        request_delete = json.loads(request.body)
-        employee_email = request_delete.get('employee_email')
+        request_data = json.loads(request.body)
+        employee_email = request_data.get('employee_email')
 
         if employee_email:
             try:
@@ -146,6 +152,7 @@ class EmployeeView(View):
                 status = 200
                 message = "Employee '{}' deleted".format(employee_email)
         else:
+            logger.debug('employee DELETE: {}'.format(request_data))
             status = 400
             message = 'Missing data'
             response_data = {'content': message}

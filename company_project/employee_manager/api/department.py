@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 import json
+import logging
 
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
@@ -12,6 +13,9 @@ from employee_manager.api_tools import (
     check_auth_token, validate_content_type, clean_request_data
 )
 from employee_manager.models import Department
+
+
+logger = logging.getLogger(__name__)
 
 
 class DepartmentView(View):
@@ -47,6 +51,7 @@ class DepartmentView(View):
                 response_data = {'content': message}
 
         else:
+            logger.debug('department POST: {}'.format(request_data))
             status = 400
             message = 'Missing data'
             response_data = {'content': message}
@@ -87,6 +92,7 @@ class DepartmentView(View):
                     )
 
         else:
+            logger.debug('department PUT: {}'.format(request_data))
             status = 400
             message = 'Missing data'
             response_data = {'content': message}
@@ -101,8 +107,8 @@ class DepartmentView(View):
     @check_auth_token
     @validate_content_type
     def delete(self, request, *args, **kwargs):
-        request_delete = json.loads(request.body)
-        department_name = request_delete.get('department_name')
+        request_data = json.loads(request.body)
+        department_name = request_data.get('department_name')
 
         if department_name:
             try:
@@ -121,6 +127,7 @@ class DepartmentView(View):
                     message = "Department '{}' deleted".format(department_name)
 
         else:
+            logger.debug('department DELETE: {}'.format(request_data))
             status = 400
             message = 'Missing data'
             response_data = {'content': message}

@@ -6,11 +6,8 @@ import json
 
 from django.http import HttpResponse
 
-
-# TODO: get this config from environment settings
-ACCEPTABLE_CONTENT_TYPES = ['application/json', ]
-# TODO: manage these tokens another way and get them from DB or env settings
-AUTHORIZATION_TOKENS = ['00123456789ABCDEF', ]
+from company_project.settings import (API_ACCEPTABLE_CONTENT_TYPES,
+                                      AUTHORIZATION_TOKENS)
 
 
 def _validate_auth(token):
@@ -49,7 +46,7 @@ def validate_content_type(view):
     def wrapped(request, *args, **kwargs):
         meta = _get_META(request)
         content_type = meta.get('CONTENT_TYPE')
-        if not content_type or content_type.lower() not in ACCEPTABLE_CONTENT_TYPES:
+        if not content_type or content_type.lower() not in API_ACCEPTABLE_CONTENT_TYPES:
             response_data = {'content': 'Unsupported content_type'}
             return HttpResponse(
                 json.dumps(response_data),
