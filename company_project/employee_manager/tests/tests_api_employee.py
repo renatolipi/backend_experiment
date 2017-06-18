@@ -189,6 +189,22 @@ class EmployeeCreatingTests(TestCase):
                          {'content': 'Missing data'})
         self.assertEqual(Department.objects.count(), 0)
 
+    def test_create_user_for_nonexistent_department(self):
+        Department.objects.create(name='Mobile')
+        data = {"employee_name": "Foolano",
+                "employee_email": "one@testc.om",
+                "employee_department": "Financial"}
+
+        response = self.client.post('/api/v1/employee',
+                                    json.dumps(data),
+                                    content_type='application/json',
+                                    **self.headers)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(),
+                         {'content': "Department does not exist"})
+        self.assertEqual(Department.objects.count(), 1)
+
     def test_create_user_successfully(self):
         Department.objects.create(name='Mobile')
         data = {"employee_name": "Foolano",
