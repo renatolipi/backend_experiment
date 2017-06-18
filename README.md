@@ -82,7 +82,7 @@ Now, hit `http://localhost:8000/admin` on your web browser. Login with username 
 ## Runing tests
  Once you are in `/home/user/backend_experiment/company_project`, type:
  ```
- $ python manage.py tests
+ $ python manage.py test
  ```
 
 #### Coverage
@@ -90,7 +90,7 @@ Now, hit `http://localhost:8000/admin` on your web browser. Login with username 
  **Remember:** Coverage doesn't guarantee your code is 100% tested, neither fail proof.
 
  ```
- $ coverage run --source='.' company_project/manage.py test employee_manager
+ $ coverage run --source='.' manage.py test employee_manager
  ```
 
 then
