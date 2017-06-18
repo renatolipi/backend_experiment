@@ -80,6 +80,21 @@ Now, hit `http://localhost:8000/admin` on your web browser. Login with username 
  $ python manage.py tests
  ```
 
+#### Coverage
+
+ **Remember:** Coverage doesn't guarantee your code is 100% tested, neither fail proof.
+
+ ```
+ $ coverage run --source='.' company_project/manage.py test employee_manager
+ ```
+
+then
+
+```
+$ coverage report -m
+```
+
+
  ---
 
  ## API Docs

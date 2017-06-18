@@ -3,3 +3,6 @@
 
 # databases
 *.sqlite3
+
+# coverage
+*.coverage
