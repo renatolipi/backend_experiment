@@ -14,4 +14,4 @@ before_script:
 - python company_project/manage.py migrate --noinput
 
 # command to run tests
-script: python company_project/manage.py tests
+script: python company_project/manage.py test
