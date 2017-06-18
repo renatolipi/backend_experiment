@@ -122,8 +122,6 @@ paths:
           description: "Unauthorized"
         404:
           description: "Not found"
-        409:
-          description: "Conflict: Department already exists."
       security:
       - api_key: []
 
@@ -296,7 +294,7 @@ paths:
         description: "Department name"
         required: true
         schema:
-          $ref: "#/definitions/Employee"
+          $ref: "#/definitions/EmployeeDelete"
       responses:
         200:
           description: "Ok"
@@ -363,11 +361,19 @@ definitions:
   Employee:
     type: "object"
     properties:
+      id:
+        type: "integer"
       name:
         type: "string"
       email:
         type: "string"
       department:
+        type: "string"
+
+  EmployeeDelete:
+    type: "object"
+    properties:
+      email:
         type: "string"
 
   ApiPostResponseOkList:

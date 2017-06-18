@@ -192,7 +192,7 @@ class DepartmentUpdatingTests(TestCase):
                          {'content': 'Missing data'})
 
     def test_update_nonexistent_department(self):
-        data = {"id": "1",
+        data = {"department_id": "1",
                 "department_name": "Techonology"}
 
         response = self.client.put('/api/v1/department',
@@ -208,7 +208,7 @@ class DepartmentUpdatingTests(TestCase):
         Department.objects.create(name="Financial")
         Department.objects.create(name="Technology")
 
-        data = {"id": "1",
+        data = {"department_id": "1",
                 "department_name": "Technology"}
 
         response = self.client.put('/api/v1/department',
@@ -216,7 +216,7 @@ class DepartmentUpdatingTests(TestCase):
                                    content_type='application/json',
                                    **self.headers)
 
-        self.assertEqual(response.status_code, 409)
+        self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(),
                          {'content': "Department already exists"})
 
@@ -224,7 +224,7 @@ class DepartmentUpdatingTests(TestCase):
         Department.objects.create(name="Financial")
         Department.objects.create(name="Tech")
 
-        data = {"id": "2",
+        data = {"department_id": "2",
                 "department_name": "Mobile"}
 
         response = self.client.put('/api/v1/department',

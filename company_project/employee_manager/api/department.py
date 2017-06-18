@@ -61,7 +61,7 @@ class DepartmentView(View):
     @validate_content_type
     def put(self, request, *args, **kwargs):
         request_data = json.loads(request.body)
-        department_id = request_data.get('id')
+        department_id = request_data.get('department_id')
         department_new_name = request_data.get('department_name')
 
         if department_id and department_new_name:
@@ -78,7 +78,7 @@ class DepartmentView(View):
                 try:
                     department.save()
                 except IntegrityError:
-                    status = 409
+                    status = 400
                     message = "Department already exists"
                 else:
                     status = 200
