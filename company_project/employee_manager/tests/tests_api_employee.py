@@ -230,6 +230,8 @@ class EmployeeUpdatingTests(TestCase):
 
     def setUp(self):
         self.client = Client()
+        self.headers = {'CONTENT_TYPE': 'application/json',
+                        'HTTP_AUTHORIZATION': '00123456789ABCDEF'}
 
     def test_update_employee_with_no_authorization_token(self):
         headers = {'CONTENT_TYPE': 'application/json'}
@@ -256,17 +258,137 @@ class EmployeeUpdatingTests(TestCase):
         self.assertEqual(response.json(),
                          {'content': 'Unsupported content_type'})
 
-    # updating non existent
+    def test_update_missing_parameters(self):
+        department1 = Department.objects.create(name="Tech")
+        department2 = Department.objects.create(name="Mobile")
+        Employee.objects.create(name='Droid Bot',
+                                email='one@testc.om',
+                                department=department1)
+        Employee.objects.create(name='Foolano',
+                                email='two@testc.om',
+                                department=department2)
 
-    # updating to an already existent
+        data = {"id": "2",
+                "employee_name": "Jack",
+                "employee_email": "three@testc.om"}
 
-    # updating successfull
+        response = self.client.put('/api/v1/employee',
+                                   json.dumps(data),
+                                   content_type='application/json',
+                                   **self.headers)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(),
+                         {'content': "Missing data"})
+
+        self.assertEqual(Employee.objects.count(), 2)
+
+    def test_update_nonexistent_employee(self):
+        department = Department.objects.create(name="Tech")
+        Employee.objects.create(name='Droid Bot',
+                                email='one@testc.om',
+                                department=department)
+
+        data = {"employee_id": "3",
+                "employee_name": "Jack",
+                "employee_email": "three@testc.om",
+                "employee_department": "Tech"}
+
+        response = self.client.put('/api/v1/employee',
+                                   json.dumps(data),
+                                   content_type='application/json',
+                                   **self.headers)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(),
+                         {'content': "Employee not found"})
+        self.assertEqual(Employee.objects.count(), 1)
+
+    def test_update_to_nonexistent_department(self):
+        department = Department.objects.create(name="Tech")
+        Department.objects.create(name="Mobile")
+        Employee.objects.create(name='Droid Bot',
+                                email='one@testc.om',
+                                department=department)
+
+        data = {"employee_id": "1",
+                "employee_name": "Jack",
+                "employee_email": "three@testc.om",
+                "employee_department": "Financial"}
+
+        response = self.client.put('/api/v1/employee',
+                                   json.dumps(data),
+                                   content_type='application/json',
+                                   **self.headers)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(),
+                         {'content': "Department not found"})
+
+        self.assertEqual(Employee.objects.count(), 1)
+        employee = Employee.objects.get(email='one@testc.om')
+        self.assertTrue(employee.department.name, department.name)
+        self.assertFalse(employee.department.name == 'Financial')
+
+    def test_update_employee_to_existing_email(self):
+        department1 = Department.objects.create(name="Tech")
+        department2 = Department.objects.create(name="Mobile")
+        Employee.objects.create(name='Droid Bot',
+                                email='one@testc.om',
+                                department=department1)
+        Employee.objects.create(name='Foolano',
+                                email='two@testc.om',
+                                department=department2)
+
+        data = {"employee_id": "1",
+                "employee_name": "Droid",
+                "employee_email": "two@testc.om",
+                "employee_department": "Mobile"}
+
+        response = self.client.put('/api/v1/employee',
+                                   json.dumps(data),
+                                   content_type='application/json',
+                                   **self.headers)
+
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(response.json(),
+                         {'content': "Another user already has this email"})
+
+    def test_update_succesfully(self):
+        department1 = Department.objects.create(name="Tech")
+        department2 = Department.objects.create(name="Mobile")
+        Employee.objects.create(name='Droid Bot',
+                                email='one@testc.om',
+                                department=department1)
+        Employee.objects.create(name='Foolano',
+                                email='two@testc.om',
+                                department=department2)
+
+        data = {"employee_id": "2",
+                "employee_name": "Jack",
+                "employee_email": "three@testc.om",
+                "employee_department": "Tech"}
+
+        response = self.client.put('/api/v1/employee',
+                                   json.dumps(data),
+                                   content_type='application/json',
+                                   **self.headers)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(),
+                         {'content': "Employee updated"})
+
+        self.assertEqual(Employee.objects.count(), 2)
+        self.assertFalse(Employee.objects.filter(email='two@testc.om'))
+        self.assertTrue(Employee.objects.filter(email='three@testc.om'))
 
 
 class EmployeeDeletingTests(TestCase):
 
     def setUp(self):
         self.client = Client()
+        self.headers = {'CONTENT_TYPE': 'application/json',
+                        'HTTP_AUTHORIZATION': '00123456789ABCDEF'}
 
     def test_delete_employee_with_no_authorization_token(self):
         headers = {'CONTENT_TYPE': 'application/json'}
@@ -293,7 +415,48 @@ class EmployeeDeletingTests(TestCase):
         self.assertEqual(response.json(),
                          {'content': 'Unsupported content_type'})
 
-    # deleting non existent
+    def test_delete_missing_or_wrong_parameters(self):
+        department = Department.objects.create(name="Financial")
+        Employee.objects.create(name='Droid Bot',
+                                email="one@testc.om",
+                                department=department)
 
-    # deleting successfull
+        data = {"email": "another@testc.om"}
 
+        response = self.client.delete('/api/v1/employee',
+                                      json.dumps(data),
+                                      content_type='application/json',
+                                      **self.headers)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(),
+                         {'content': "Missing data"})
+
+    def test_delete_nonexistent_employee(self):
+        data = {"employee_email": "another@testc.om"}
+
+        response = self.client.delete('/api/v1/employee',
+                                      json.dumps(data),
+                                      content_type='application/json',
+                                      **self.headers)
+
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(),
+                         {'content': "Employee not found"})
+
+    def test_delete_successfully(self):
+        department = Department.objects.create(name="Financial")
+        Employee.objects.create(name='Droid Bot',
+                                email="one@testc.om",
+                                department=department)
+
+        data = {"employee_email": "one@testc.om"}
+
+        response = self.client.delete('/api/v1/employee',
+                                      json.dumps(data),
+                                      content_type='application/json',
+                                      **self.headers)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(),
+                         {'content': "Employee 'one@testc.om' deleted"})

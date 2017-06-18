@@ -49,7 +49,7 @@ class EmployeeView(View):
 
             except ObjectDoesNotExist:
                 status = 400
-                message = 'Department does not exists'
+                message = 'Department does not exist'
                 response_data = {'content': message}
 
             except IntegrityError:
@@ -75,9 +75,84 @@ class EmployeeView(View):
     @check_auth_token
     @validate_content_type
     def put(self, request, *args, **kwargs):
-        pass
+        request_data = clean_request_data(request.body)
+        employee_id = request_data.get('employee_id')
+        employee_new_name = request_data.get('employee_name')
+        employee_new_email = request_data.get('employee_email')
+        employee_new_department = request_data.get('employee_department')
+
+        if not (employee_id and employee_new_name and employee_new_email and
+                employee_new_department):
+            status = 400
+            message = "Missing data"
+            response_data = {'content': message}
+            return HttpResponse(json.dumps(response_data),
+                                content_type="application/json",
+                                status=status)
+
+        try:
+            department = Department.objects.get(name=employee_new_department)
+        except ObjectDoesNotExist:
+                status = 400
+                message = 'Department not found'
+                response_data = {'content': message}
+
+                return HttpResponse(json.dumps(response_data),
+                                    content_type="application/json",
+                                    status=status)
+
+        try:
+            employee = Employee.objects.get(id=employee_id)
+
+        except ObjectDoesNotExist:
+            status = 404
+            message = "Employee not found"
+
+        else:
+            employee.name = employee_new_name
+            employee.email = employee_new_email
+            employee.department = department
+
+            try:
+                employee.save()
+            except IntegrityError:
+                status = 409
+                message = "Another user already has this email"
+            else:
+                status = 200
+                message = "Employee updated"
+
+        response_data = {'content': message}
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json",
+            status=status
+        )
 
     @check_auth_token
     @validate_content_type
     def delete(self, request, *args, **kwargs):
-        pass
+        request_delete = json.loads(request.body)
+        employee_email = request_delete.get('employee_email')
+
+        if employee_email:
+            try:
+                employee = Employee.objects.get(email=employee_email)
+            except ObjectDoesNotExist:
+                status = 404
+                message = "Employee not found"
+            else:
+                employee.delete()
+                status = 200
+                message = "Employee '{}' deleted".format(employee_email)
+        else:
+            status = 400
+            message = 'Missing data'
+            response_data = {'content': message}
+
+        response_data = {'content': message}
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json",
+            status=status
+        )

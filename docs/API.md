@@ -68,11 +68,13 @@ $ curl -i -X POST -H "Content-Type: application/json" -H "Authorization: 0012345
 
 Update employee:
 ```
+$ curl -i -X PUT -H "Content-Type: application/json" -H "Authorization: 00123456789ABCDEF" --data-raw '{"employee_id":"1", "employee_name":"Droid Bot2", "employee_email":"one@testc.om", "employee_department":"Financial"}' http://localhost:8000/api/v1/employee
 ```
 
 
 Delete employee:
 ```
+$ curl -i -X DELETE -H "Content-Type: application/json" -H "Authorization: 00123456789ABCDEF" --data-raw '{"employee_email":"one@testc.om"}' http://localhost:8000/api/v1/employee
 ```
 
 
