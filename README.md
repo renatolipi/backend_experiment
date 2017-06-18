@@ -1,8 +1,13 @@
 # Backend Experiment
 
-This is temporary project
+*This is temporary project
 
-{Description goes here}
+##### Description
+This is an example on how to build web apps that uses APIs. In this experiment, we are pretending to build an application that manages departments and employees from a company. You can list, create, update and exclude them.
+
+* Department entity is composed by an id and a name. This name must be unique.
+
+* Employee entity is composed by and id, a name, an email, that must be unique, and a department. This last is a foreign key to department entity.
 
 ---
 
@@ -99,7 +104,7 @@ $ coverage report -m
 
  ## API Docs
 
-  There is a specific document called API.md at `backend_experiment/docs/` where you can find all instructions to use the API. We included calls using `curl`, as example.
+  There is a specific document called API.md at `backend_experiment/docs/` where you can find all instructions to use the API. We included calls using `curl` and Postman collections, as example.
 
   You can also paste the content of the file `backend_experiment/docs/api.swagger` into Swagger's online editor: `http://editor.swagger.io`, to read it pretty well formatted. **Remember:** although Swagger's online editor can generate the API client code, this `api.swagger` file was created intended to format API docs. I do not encourage you to use any auto generated code.
 
